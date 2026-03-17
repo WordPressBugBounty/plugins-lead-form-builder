@@ -1,20 +1,20 @@
 ======  Lead Form Builder & Contact Form ========
 Contributors: ThemeHunk
 Author URI: : https://www.themehunk.com/
-Tags: contact form, responsive form, lead form builder, contact form builder, newsletter form
+Tags: contact form, lead generation, lead form builder, contact form builder, newsletter form
 Requires at least: 5.5
 Tested up to: 6.9
-Stable tag: 2.1.0
+Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Fast Drag & Drop Contact From Builder and Lead Generation Tool With Google One Tap Login. Supports Block Editor.
+Drag & Drop Contact Form Builder for WordPress to create contact, lead generation, newsletter & registration forms. Works with Elementor & Gutenberg.
 
 == Description ==
 
 **Best WordPress Contact Form Plugin to create beautiful contact froms.**
 
-ThemeHunk : Lead Form Builder Plugin is a contact form builder as well as lead generator. Contact Form plugin is compatible with all page builders like Elementor, Brizy, SiteOrigin, Gutenburg etc. Lead Form Builder allows you to create beautiful contact forms. Plugin comes with nearly all field options required to create Contact form, Registration form, News letter and contain Ajax based drag & drop field ordering. 
+ThemeHunk Lead Form Builder Plugin is a powerful WordPress contact form builder and lead generation plugin. This contact form plugin is fully compatible with popular page builders like Elementor, Brizy, SiteOrigin, and Gutenberg. Lead Form Builder allows you to create beautiful and responsive contact forms easily. The plugin includes almost all field options required to create contact forms, registration forms, and newsletter forms, and comes with Ajax-based drag & drop field ordering for easy customization.
 
 [Check Documentation](http://www.themehunk.com/docs/lead-form/) |  [Demo](https://wpthemes.themehunk.com/lead-form-builder-pro/) | [Support](https://themehunk.com/contact-us/)
 
@@ -147,17 +147,22 @@ Just upload the `lead-form-builder.zip` to the `/wp-content/plugins/` directory,
 
 == Screenshots ==
 
-1. Drag and Drop field ordering. 
-2. Form Field Create.
+1. Dashboard 
+2. Form Field Create & Drag and Drop field ordering.
 3. Form Leads
 4. Google One Tap Login Feature
-5. Leads Tracing like: IP Address, Country, OS & Browser etc.
-6. Elementor Form
-7. Contact form
-8. Google Captcha
-9. Google Lead Store Data
+5. Mail Notification
+6. Form Leads Data
+7. Design
+8. Prebuild Form
 
 == Changelog ==
+
+= 2.1.2 =
+New: Added feedback form after plugin deactivation.
+
+= 2.1.1 =
+* Update: Latest Image update.
 
 = 2.1.0 =
 * Fix: SQL injection vulnerability fixed — all raw SQL queries replaced with $wpdb->prepare() in ajax-functions.php.
