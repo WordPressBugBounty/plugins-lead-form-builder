@@ -3,6 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+// include_once( plugin_dir_path(__FILE__) . 'admin/custom-post.php' );
 // Exit if accessed directly.
 if ( ! class_exists( 'Lead_Form_Builder_Blocks' ) ) {
 			class Lead_Form_Builder_Blocks {
@@ -87,15 +88,15 @@ function lead_form_builder_block_init() {
 	New Lead_Form_Builder_Blocks;
     // Register the block script
     wp_register_script(
-        'create-block-lead-form-builder-editor-script',
+        'themehunk-lead-form-builder-editor-script',
         plugins_url( 'build/index.js', __FILE__ ), // Adjust the path to your built JavaScript file
         array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-api-fetch' ), // Ensure the necessary dependencies are included
-        filemtime( plugin_dir_path( __FILE__ ) . 'build/index.js' )
+        file_exists( plugin_dir_path( __FILE__ ) . 'build/index.js' ) ? filemtime( plugin_dir_path( __FILE__ ) . 'build/index.js' ) : false
     );
 
     // Localize the script with the nonce and AJAX URL
     wp_localize_script(
-        'create-block-lead-form-builder-editor-script',
+        'themehunk-lead-form-builder-editor-script',
         'lfbScriptData',
         array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -105,22 +106,22 @@ function lead_form_builder_block_init() {
 
 	  // Register the block type and associate the script
 	  register_block_type( __DIR__ . '/build', array(
-        'editor_script' => 'create-block-lead-form-builder-editor-script',
+        'editor_script' => 'themehunk-lead-form-builder-editor-script',
     ) );
 
 
 
 	// register_block_type( __DIR__ . '/build/form', array(
-    //     'editor_script' => 'create-block-lead-form-builder-blocks-editor-script',
+    //     'editor_script' => 'themehunk-lead-form-builder-blocks-editor-script',
     // ) );
 
 
-	// register_block_type( 'create-block/lead-form-builder-blocks', array(
-    //     'editor_script' => 'create-block-lead-form-builder-blocks-script'
+	// register_block_type( 'themehunk/lead-form-builder-blocks', array(
+    //     'editor_script' => 'themehunk-lead-form-builder-blocks-script'
     // ) );
 
 	// wp_register_script(
-    //     'create-block-lead-form-builder-blocks-script',
+    //     'themehunk-lead-form-builder-blocks-script',
     //     plugins_url( 'build/form/index.js', __FILE__ ), // Adjust the path to your built JavaScript file
     //     array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-api-fetch' ), // Ensure the necessary dependencies are included
     //     filemtime( plugin_dir_path( __FILE__ ) . 'build/form/index.js' )

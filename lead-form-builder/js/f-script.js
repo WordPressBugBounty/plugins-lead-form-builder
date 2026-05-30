@@ -147,11 +147,14 @@ function lfbCaptchaCheck(element,form_id){
 function lfbValidateRequiredFields(element) {
     var hasError = false;
     var requiredMsg = (frontendajax && frontendajax.required_msg) ? frontendajax.required_msg : 'The field is required.';
-    var errorMsg   = (frontendajax && frontendajax.error_msg)    ? frontendajax.error_msg    : 'One or more fields have an error. Please check and try again.';
+    var emailMsg    = (frontendajax && frontendajax.email_msg)    ? frontendajax.email_msg    : 'Please enter a valid email address.';
+    var errorMsg    = (frontendajax && frontendajax.error_msg)    ? frontendajax.error_msg    : 'One or more fields have an error. Please check and try again.';
+    var emailRegex  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // remove previous validation messages
+    // remove previous validation messages and error borders
     element.find('.lfb-field-error').remove();
     element.find('.lfb-general-error-box').remove();
+    element.find('.lfb-input-error').removeClass('lfb-input-error');
 
     // validate each required field
     element.find('input[required], textarea[required], select[required]').each(function() {
@@ -163,6 +166,7 @@ function lfbValidateRequiredFields(element) {
             var radioName = field.attr('name');
             if (!element.find('input[name="' + radioName + '"]:checked').length) {
                 if (!container.find('.lfb-field-error').length) {
+                    container.find('input[name="' + radioName + '"]').addClass('lfb-input-error');
                     container.append('<p class="lfb-field-error">' + requiredMsg + '</p>');
                     hasError = true;
                 }
@@ -170,9 +174,26 @@ function lfbValidateRequiredFields(element) {
         } else {
             var val = jQuery.trim(field.val());
             if (!val) {
+                field.addClass('lfb-input-error');
                 container.append('<p class="lfb-field-error">' + requiredMsg + '</p>');
                 hasError = true;
+            } else if (fieldType === 'email' && !emailRegex.test(val)) {
+                field.addClass('lfb-input-error');
+                container.append('<p class="lfb-field-error">' + emailMsg + '</p>');
+                hasError = true;
             }
+        }
+    });
+
+    // validate non-required email fields that have a value
+    element.find('input[type="email"]:not([required])').each(function() {
+        var field     = jQuery(this);
+        var val       = jQuery.trim(field.val());
+        var container = field.closest('.lf-field');
+        if (val && !emailRegex.test(val)) {
+            field.addClass('lfb-input-error');
+            container.append('<p class="lfb-field-error">' + emailMsg + '</p>');
+            hasError = true;
         }
     });
 
