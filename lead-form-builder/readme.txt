@@ -4,7 +4,7 @@ Author URI: : https://www.themehunk.com/
 Tags: contact form, lead generation, form builder, forms, WordPress form plugin
 Requires at least: 7.0
 Tested up to: 7.0
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,12 @@ Just upload the `lead-form-builder.zip` to the `/wp-content/plugins/` directory,
 8. Prebuild Form
 
 == Changelog ==
+
+= 2.2.1 =
+* Fix: Default form styles (f-style.css) and scripts now load correctly on Elementor.
+* Fix: Resolved double-slash in Elementor CSS URL (lfb-styler.css) that could cause a 404 on strict servers.
+* Compatibility: Improved multisite support for Elementor pages.
+* Fix: Fixed the global lead data saving issue completely.
 
 = 2.2.0 =
 * New: Added form design customization with custom styling options.
@@ -569,6 +575,9 @@ r
 Initial release
 
 == Upgrade Notice ==
+
+= 2.2.2 =
+* Fix: Form styles and scripts now load on Elementor pages. Recommended update for all Elementor and multisite users.
 
 = 2.1.4 =
 * Performance improvement: assets now load only on pages with the lead form, reducing load time on all other pages.
