@@ -200,7 +200,8 @@ function lfb_ShowAllLeadThisForm() {
             $sn_counter++;
             $form_data = maybe_unserialize( $results->form_data );
             $lead_id   = $results->id;
-            $lead_date = date( 'M d, Y', strtotime( $results->date ) );
+            $raw_ts    = ( ! empty( $results->date ) && $results->date !== '0000-00-00 00:00:00' ) ? strtotime( $results->date ) : false;
+            $lead_date = ( $raw_ts && $raw_ts > 0 ) ? date( 'M d, Y', $raw_ts ) : esc_html__( 'N/A', 'lead-form-builder' );
             unset( $form_data['hidden_field'], $form_data['action'], $form_data['g-recaptcha-response'] );
 
             $date_td    = '<td><b>' . $lead_date . '</b></td>';
@@ -815,11 +816,11 @@ function lfb_duplicate_form() {
     if ( ! $row ) {
         wp_send_json_error( 'Form not found' );
     }
-    $new_title = __( 'Copy of', 'lead-form-builder' ) . ' ' . $row->form_title;
+    $new_title = $row->form_title . ' ' . __( '(Duplicate)', 'lead-form-builder' );
     $wpdb->insert( $table, array(
         'form_title'       => $new_title,
         'form_data'        => $row->form_data,
-        'date'             => current_time( 'Y/m/d g:i:s' ),
+        'date'             => current_time( 'Y-m-d H:i:s' ),
         'mail_setting'     => $row->mail_setting,
         'usermail_setting' => $row->usermail_setting,
         'multiData'        => $row->multiData,

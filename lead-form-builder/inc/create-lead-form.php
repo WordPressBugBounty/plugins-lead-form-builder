@@ -61,11 +61,13 @@ if ( sanitize_text_field( isset( $_POST['save_form'] ) ) && wp_verify_nonce( $_R
     $table_name = LFB_FORM_FIELD_TBL;
     $wpdb->query( $wpdb->prepare(
         "INSERT INTO $table_name ( form_title, form_data, date ) VALUES ( %s, %s, %s )",
-        $title, $form_data, date( 'Y/m/d g:i:s' )
+        $title, $form_data, date( 'Y-m-d H:i:s' )
     ) );
 
-    $nonce_val = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( $_REQUEST['_wpnonce'] ) : '';
-    $rd_url    = admin_url() . 'admin.php?page=add-new-form&action=edit&redirect=create&formid=' . $wpdb->insert_id . '&_wpnonce=' . $nonce_val;
+    $new_form_id    = $wpdb->insert_id;
+    $redirect_nonce = wp_create_nonce( '_nonce_verify' );
+    wp_redirect( admin_url( 'admin.php?page=add-new-form&action=edit&redirect=create&formid=' . $new_form_id . '&_wpnonce=' . $redirect_nonce ) );
+    exit;
 }
 
 Class LFB_AddNewForm {
