@@ -535,15 +535,58 @@ function save_new_form() {
  *Save forms in admin area
  */
     jQuery("form#new_lead_form").submit(function(event) {
+        event.preventDefault();
+
+        var $form       = jQuery(this);
         var form_heading = jQuery(".new_form_heading").val();
-        if (form_heading != '') {
-            jQuery(".new_form_heading").removeClass('form_field_error');
-        } else {
-            event.preventDefault();
-            jQuery(".new_form_heading").addClass('form_field_error');
-            jQuery(".new_form_heading").focus();
+
+        if (form_heading === '') {
+            jQuery(".new_form_heading").addClass('form_field_error').focus();
+            return;
         }
+        jQuery(".new_form_heading").removeClass('form_field_error');
+
+        var isSave   = jQuery('#save_form').length > 0;
+        var $btn     = isSave ? jQuery('#save_form') : jQuery('#update_form');
+        var origText = $btn.val();
+        var action   = isSave ? 'lfb_ajax_save_form' : 'lfb_ajax_update_form';
+
+        $btn.val(isSave ? 'Saving...' : 'Updating...').prop('disabled', true);
+
+        var formData = $form.serialize() + '&action=' + action + '&nonce=' + backendajax.nonce;
+
+        jQuery.post(backendajax.ajaxurl, formData)
+            .done(function(response) {
+                if (response.success) {
+                    if (isSave) {
+                        window.location.href = response.data.redirect;
+                    } else {
+                        $btn.val(origText).prop('disabled', false);
+                        jQuery('#message').remove();
+                        jQuery('<div id="message" class="updated notice is-dismissible">' +
+                            '<p><strong>' + response.data.message + '</strong></p>' +
+                            '<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss</span></button>' +
+                            '</div>'
+                        ).insertBefore(jQuery('.nav-tab-wrapper').first());
+                        jQuery('html, body').animate({ scrollTop: 0 }, 300);
+                        setTimeout(function() {
+                            jQuery('#message').fadeOut(600, function() { jQuery(this).remove(); });
+                        }, 3000);
+                    }
+                } else {
+                    $btn.val(origText).prop('disabled', false);
+                    alert(response.data.message || 'Something went wrong.');
+                }
+            })
+            .fail(function() {
+                $btn.val(origText).prop('disabled', false);
+                alert('Request failed. Please try again.');
+            });
     })
+
+    jQuery(document).on('click', '.notice-dismiss', function() {
+        jQuery(this).closest('.notice').fadeOut(200, function(){ jQuery(this).remove(); });
+    });
     /*
      *Add dynamic sub-fields according to Field Type
      */
@@ -1239,9 +1282,11 @@ jQuery(document).on('click', '.lfb-form-table .toggle-row', function() {
 });
 
 jQuery(document).on('click', '.lfb-act-btn--copy', function() {
-    var $btn   = jQuery(this);
-    var formId = $btn.data('form-id');
-    $btn.prop('disabled', true).css('opacity', '0.5');
+    var $btn      = jQuery(this);
+    var formId    = $btn.data('form-id');
+    var origHtml  = $btn.html();
+    var spinnerSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>';
+    $btn.addClass('lfb-loading').prop('disabled', true).html(spinnerSvg);
     jQuery.post(backendajax.ajaxurl, {
         action  : 'lfb_duplicate_form',
         form_id : formId,
@@ -1251,7 +1296,10 @@ jQuery(document).on('click', '.lfb-act-btn--copy', function() {
             lfbFormPage(1);
         } else {
             alert('Could not duplicate form.');
-            $btn.prop('disabled', false).css('opacity', '1');
+            $btn.removeClass('lfb-loading').prop('disabled', false).html(origHtml);
         }
-    }, 'json');
+    }, 'json').fail(function() {
+        alert('Could not duplicate form.');
+        $btn.removeClass('lfb-loading').prop('disabled', false).html(origHtml);
+    });
 });
