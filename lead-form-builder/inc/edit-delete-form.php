@@ -45,7 +45,7 @@ Class LFB_EDIT_DEL_FORM {
             if ( $rv === 'create' ) {
                 $form_message = '<div id="message" class="updated notice is-dismissible"><p>Form <strong>Saved</strong>.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html__( 'Dismiss this notice.', 'lead-form-builder' ) . '</span></button></div>';
             } elseif ( $rv === 'update' ) {
-                $form_message = '<div id="message" class="updated notice is-dismissible"><p>Form <strong>Updated</strong>.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html__( 'Dismiss this notice.', 'lead-form-builder' ) . '</span></button></div>';
+                $form_message = '<div id="message" class="updated notice is-dismissible"><p><strong>' . esc_html__( 'Updated successfully.', 'lead-form-builder' ) . '</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html__( 'Dismiss this notice.', 'lead-form-builder' ) . '</span></button></div>';
             }
         }
 
@@ -78,7 +78,7 @@ Class LFB_EDIT_DEL_FORM {
                     <form method="post" action="' . esc_url( $update_url ) . '" id="new_lead_form">
                         <div class="lfb-form-title-wrap">
                             <label class="lfb-form-title-label">' . esc_html__( 'Form Title', 'lead-form-builder' ) . '</label>
-                            <input type="text" class="new_form_heading" name="post_title" placeholder="' . esc_attr__( 'Enter title here', 'lead-form-builder' ) . '" value="' . esc_attr( $form_title ) . '" id="title" autocomplete="off">
+                            <input type="text" class="new_form_heading" name="post_title" placeholder="' . esc_attr__( 'hello-form-and-theme', 'lead-form-builder' ) . '" value="' . esc_attr( $form_title ) . '" id="title" autocomplete="off">
                         </div>';
         $this->lfb_basic_form();
         echo $all_form_fields;
